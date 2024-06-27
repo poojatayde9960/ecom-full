@@ -17,7 +17,7 @@ exports.registerAdmin = asyncHandler(async (req, res) => {
 })
 exports.loginAdmin = asyncHandler(async (req, res) => {
     const { email, password } = req.body
-    const found = await Admin.findOne({ email })
+    const found = await User.findOne({ email })
     if (!found) {
         return res.status(404).json({ message: "Email not Register with Us " })
     }
