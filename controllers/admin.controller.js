@@ -43,11 +43,13 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
     res.json({ message: "product delete Success" })
 })
 exports.deactivateProduct = asyncHandler(async (req, res) => {
-    await Product.findByIdAndUpdate(req.body, req.params.id)
+    const { id } = req.params
+    await Product.findByIdAndUpdate(id, { active: false })
     res.json({ message: "product Deactivate Success" })
 })
 exports.activateProduct = asyncHandler(async (req, res) => {
-    await Product.findByIdAndUpdate(req.body, req.params.id)
+    const { id } = req.params
+    await Product.findByIdAndUpdate(id, { active: true })
     res.json({ message: "product activate Success" })
 })
 exports.getProductDetails = asyncHandler(async (req, res) => {
