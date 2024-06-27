@@ -9,7 +9,7 @@ exports.registerAdmin = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     const found = await Admin.findOne({ email })
     if (found) {
-        return res.status(404).json({ message: "Email Already register with Us " })
+        return res.status(401).json({ message: "Email Already register with Us " })
     }
     const hash = await bcrypt.hash(password, 10)
     await Admin.create({ name, email, password: hash })
@@ -19,11 +19,11 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const found = await User.findOne({ email })
     if (!found) {
-        return res.status(404).json({ message: "Email not Register with Us " })
+        return res.status(401).json({ message: "Email not Register with Us " })
     }
     const verify = await bcrypt.compare(password, found.password)
     if (!verify) {
-        return res.status(404).json({ message: "password Do Not Match " })
+        return res.status(401).json({ message: "password Do Not Match " })
     }
     const token = jwt.sign({ userId: found._id }, process.env.JWT_KEY)
     res.cookie("admin", token, { httpOnly: true })
@@ -42,7 +42,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     const found = await User.findOne({ email })
     if (found) {
-        return res.status(404).json({ message: "Email Already register with Us " })
+        return res.status(401).json({ message: "Email Already register with Us " })
     }
     const hash = await bcrypt.hash(password, 10)
     await Admin.create({ name, email, password: hash })
@@ -51,8 +51,8 @@ exports.registerUser = asyncHandler(async (req, res) => {
 exports.loginUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     const found = await User.findOne({ email })
-    if (found) {
-        return res.status(404).json({ message: "Email Already register with Us " })
+    if (!found) {
+        return res.status(401).json({ message: "Email Already register with Us " })
     }
     const hash = await bcrypt.hash(password, 10)
     await Admin.create({ name, email, password: hash })
