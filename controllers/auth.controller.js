@@ -8,7 +8,11 @@ exports.registerAdmin = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     const found = await Admin.findOne({ email })
     if (found) {
+<<<<<<< HEAD
         return res.status(401).json({ message: "Email Already registered with us" })
+=======
+        return res.status(401).json({ message: "Email Already register with Us " })
+>>>>>>> 857059a9ceac71701a8b2623226149a673717918
     }
     const hash = await bcrypt.hash(password, 10)
     await Admin.create({ name, email, password: hash })
@@ -16,14 +20,22 @@ exports.registerAdmin = asyncHandler(async (req, res) => {
 })
 exports.loginAdmin = asyncHandler(async (req, res) => {
     const { email, password } = req.body
-    const found = await Admin.findOne({ email })
+    const found = await User.findOne({ email })
     if (!found) {
+<<<<<<< HEAD
         return res.status(401).json({ message: "Eamil Not Registered with us" })
+=======
+        return res.status(401).json({ message: "Email not Register with Us " })
+>>>>>>> 857059a9ceac71701a8b2623226149a673717918
     }
     const verify = await bcrypt.compare(password, found.password)
 
     if (!verify) {
+<<<<<<< HEAD
         return res.status(401).json({ message: "Password Do Not Match" })
+=======
+        return res.status(401).json({ message: "password Do Not Match " })
+>>>>>>> 857059a9ceac71701a8b2623226149a673717918
     }
     const token = jwt.sign({ userId: found._id }, process.env.JWT_KEY)
 
@@ -38,6 +50,10 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
     })
 
 })
+<<<<<<< HEAD
+=======
+
+>>>>>>> 857059a9ceac71701a8b2623226149a673717918
 exports.registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
     const found = await User.findOne({ email })
@@ -67,8 +83,13 @@ exports.loginUser = asyncHandler(async (req, res) => {
             _id: found._id,
             name: found.name,
             email: found.email,
+<<<<<<< HEAD
         }
     })
+=======
+        }
+    })
+>>>>>>> 857059a9ceac71701a8b2623226149a673717918
 
 })
 exports.logoutAdmin = asyncHandler(async (req, res) => {
