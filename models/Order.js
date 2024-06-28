@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
             },
         }
     ],
-    status: { type: String, enum: ["places", "cancel", "deklivered"], default: "placed" },
+    status: { type: String, enum: ["placed", "cancel", "deklivered"], default: "placed" },
 }, { timestamps: true })
 
 module.exports = mongoose.model("order", orderSchema)
