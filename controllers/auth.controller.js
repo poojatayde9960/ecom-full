@@ -46,13 +46,10 @@ exports.registerUser = asyncHandler(async (req, res) => {
     }
     const hash = await bcrypt.hash(password, 10)
     await User.create({ name, email, password: hash })
-    res.json({ message: "Register Success" })
 })
 exports.loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const found = await User.findOne({ email })
-
-
     if (!found) {
         return res.status(401).json({ message: "Eamil Not Registered with us" })
     }
