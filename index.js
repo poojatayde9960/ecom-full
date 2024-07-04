@@ -5,12 +5,14 @@ require("dotenv").config()
 mongoose.connect(process.env.MONGO_URL)
 
 const app = express()
-app.use(express.json())
+
+app.use(express.static("public"))
 app.use(cors({
     origin: true,
     // origin: "*",
     credentials: true
 }))
+app.use(express.json())
 app.use("/api/admin", require("./routes/admin.routes"))
 app.use("/api/auth", require("./routes/auth.routes"))
 app.use("/api/public", require("./routes/public.routes"))

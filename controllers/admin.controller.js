@@ -78,7 +78,7 @@ exports.getAllOrders = asyncHandler(async (req, res) => {
         })
         // console.log(result.map(item => item))
         .sort({ createdAt: -1 })
-    res.json({ message: "ordrs  Fetch success", result })
+    res.json({ message: "ordrs Fetch success", result })
 })
 exports.getOrderDetail = asyncHandler(async (req, res) => {
     res.json({ message: "ordrs  order Details " })
