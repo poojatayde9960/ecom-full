@@ -1,11 +1,13 @@
 const mongoose = require("mongoose")
+
 const orderSchema = new mongoose.Schema({
-    user: { type: mongoose.Types.ObjectId, required: true, ref: "user" },
+    user: { type: mongoose.Types.ObjectId, ref: "user", required: true },
     products: [
         {
             product: {
                 type: mongoose.Types.ObjectId,
-                ref: "product"
+                ref: "product",
+                required: true
             },
             qty: {
                 type: Number,
@@ -13,7 +15,6 @@ const orderSchema = new mongoose.Schema({
             },
         }
     ],
-    status: { type: String, enum: ["placed", "cancel", "deklivered"], default: "placed" },
+    status: { type: String, enum: ["placed", "cancel", "delivered"], default: "placed" },
 }, { timestamps: true })
-
-module.exports = mongoose.model("order", orderSchema)
+module.exports = mongoose.model("orders", orderSchema)

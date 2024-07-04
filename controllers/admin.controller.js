@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler")
 const Product = require("../models/Product")
 const { upload } = require("../utils/upload")
+const Order = require("../models/Order")
+const User = require("../models/User")
 const cloudinary = require("cloudinary").v2
 
 cloudinary.config({
@@ -59,7 +61,24 @@ exports.getProductDetails = asyncHandler(async (req, res) => {
 
 //orders
 exports.getAllOrders = asyncHandler(async (req, res) => {
-    res.json({ message: "ordrs  Fetch update" })
+    const result = await Order.find()
+        .populate("user", {
+            password: 0, active: 0, createdAt: 0,
+            updatedAt: 0,
+            __v: 0
+
+        })
+        .populate("products.product", {
+            __id: 1,
+            name: 1,
+            desc: 1,
+            price: 1,
+            mrp: 1,
+            images: 1
+        })
+        // console.log(result.map(item => item))
+        .sort({ createdAt: -1 })
+    res.json({ message: "ordrs  Fetch success", result })
 })
 exports.getOrderDetail = asyncHandler(async (req, res) => {
     res.json({ message: "ordrs  order Details " })
@@ -68,20 +87,28 @@ exports.cancelOrder = asyncHandler(async (req, res) => {
     res.json({ message: "ordrs  cancel success" })
 })
 exports.updateOrderStatus = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    const { status } = req.body
+    await Order.findByIdAndUpdate(id, { status })
     res.json({ message: "ordrs  update success " })
 })
 
 // user
 exports.getAllUser = asyncHandler(async (req, res) => {
-    res.json({ message: "user fetch  Success" })
+    const result = await User.find()
+    res.json({ message: "user fetch  Success", result })
 })
 exports.getUserDetails = asyncHandler(async (req, res) => {
     res.json({ message: "user Detail fetch  Success" })
 })
 exports.blockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    await User.findByIdAndUpdate(id, { active: false })
     res.json({ message: "user Block Success" })
 })
 exports.unblockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    await User.findByIdAndUpdate(id, { active: true })
     res.json({ message: "user un-Block  Success" })
 })
 exports.getUserOrders = asyncHandler(async (req, res) => {
